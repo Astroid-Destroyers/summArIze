@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #030712;
+  --foreground: #f9fafb;
 }
 
 @theme inline {
@@ -12,15 +12,285 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: white;
+}
+
+/* ---- Animations ---- */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 50%, 90% { transform: translateX(-4px); }
+  30%, 70% { transform: translateX(4px); }
+}
+
+@keyframes success-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, 0) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, 0) scale(1.05); }
+}
+
+@keyframes glow-pulse-delayed {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+.animate-success {
+  animation: success-pop 0.4s ease-out;
+}
+
+.animate-glow {
+  animation: glow-pulse 6s ease-in-out infinite;
+}
+
+.animate-glow-delayed {
+  animation: glow-pulse-delayed 8s ease-in-out 2s infinite;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* ---- Scroll Reveal ---- */
+
+.reveal-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-section.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Feature card stagger */
+.revealed .feature-card {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+.revealed .feature-card-0 { animation-delay: 0ms; }
+.revealed .feature-card-1 { animation-delay: 80ms; }
+.revealed .feature-card-2 { animation-delay: 160ms; }
+.revealed .feature-card-3 { animation-delay: 240ms; }
+.revealed .feature-card-4 { animation-delay: 320ms; }
+.revealed .feature-card-5 { animation-delay: 400ms; }
+
+/* How-step stagger with scale */
+.revealed .how-step {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  animation: scaleInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.revealed .how-step-0 { animation-delay: 100ms; }
+.revealed .how-step-1 { animation-delay: 300ms; }
+.revealed .how-step-2 { animation-delay: 500ms; }
+
+/* Team card stagger */
+.revealed .team-card {
+  opacity: 0;
+  transform: translateY(30px) scale(0.9);
+  animation: scaleInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.revealed .team-card-0 { animation-delay: 100ms; }
+.revealed .team-card-1 { animation-delay: 200ms; }
+.revealed .team-card-2 { animation-delay: 300ms; }
+.revealed .team-card-3 { animation-delay: 400ms; }
+.revealed .team-card-4 { animation-delay: 500ms; }
+
+@keyframes scaleInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.6; }
+}
+
+@keyframes flow-line {
+  0% { transform: translateX(-100%); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.animate-flow-line {
+  animation: flow-line 3s ease-in-out infinite;
+}
+
+/* ---- Gradient Text Shimmer ---- */
+
+.gradient-text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #60a5fa 0%,
+    #a78bfa 25%,
+    #c084fc 50%,
+    #a78bfa 75%,
+    #60a5fa 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes text-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ---- Floating Particles ---- */
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.particle-1 {
+  width: 4px; height: 4px;
+  background: rgba(96, 165, 250, 0.4);
+  top: 20%; left: 15%;
+  animation: float-up 12s ease-in-out infinite;
+}
+.particle-2 {
+  width: 3px; height: 3px;
+  background: rgba(167, 139, 250, 0.35);
+  top: 60%; left: 80%;
+  animation: float-up 10s ease-in-out 2s infinite;
+}
+.particle-3 {
+  width: 5px; height: 5px;
+  background: rgba(192, 132, 252, 0.3);
+  top: 40%; left: 50%;
+  animation: float-up 14s ease-in-out 4s infinite;
+}
+.particle-4 {
+  width: 3px; height: 3px;
+  background: rgba(96, 165, 250, 0.3);
+  top: 70%; left: 25%;
+  animation: float-up 11s ease-in-out 1s infinite;
+}
+.particle-5 {
+  width: 4px; height: 4px;
+  background: rgba(167, 139, 250, 0.25);
+  top: 30%; left: 70%;
+  animation: float-up 13s ease-in-out 3s infinite;
+}
+.particle-6 {
+  width: 2px; height: 2px;
+  background: rgba(192, 132, 252, 0.4);
+  top: 80%; left: 60%;
+  animation: float-up 9s ease-in-out 5s infinite;
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) translateX(30px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ---- Grid Mask ---- */
+
+.mask-fade {
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 40%, black 20%, transparent 70%);
 }
