@@ -1,3 +1,6 @@
+<!-- insert image from summarize.png -->
+![summarize database](summarize.png)
+
 This database is designed for a study-support system where users upload notes, documents, or video links and receive AI-generated learning materials. 
 StudyMaterial is the core entity because summaries, notes, quizzes, flashcards, and other outputs all come from the uploaded content. 
 GeneratedContent stores flexible AI results such as summaries, auto notes, feedback, or gamified notes without duplicating the original material.
