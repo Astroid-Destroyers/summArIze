@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -71,9 +72,18 @@ export function SiteHeader({
         <div className="flex items-center gap-2">
           <Link
             href="/"
-            className="text-sm font-semibold tracking-tight hover:opacity-90"
+            className="flex items-center gap-2 hover:opacity-90"
           >
-            Summarize
+            <Image
+              src="/logo.png"
+              alt="Summarize Logo"
+              width={40}
+              height={40}
+              className="rounded-sm"
+            />
+            <span className="text-sm font-semibold tracking-tight">
+              summArIze
+            </span>
           </Link>
         </div>
 
