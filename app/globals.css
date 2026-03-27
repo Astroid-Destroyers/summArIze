@@ -288,6 +288,22 @@ html {
   }
 }
 
+/* ---- Orbit Animation ---- */
+
+@keyframes orbit {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(70px) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(70px) rotate(-360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
 /* ---- Grid Mask ---- */
 
 .mask-fade {

@@ -1,5 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCRY7meE2H4dQl_S8k9OX2XpNijO3RsfeE",
@@ -14,5 +15,6 @@ const firebaseConfig = {
 // Initialize Firebase only if it hasn't been initialized
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-export { app, auth };
+export { app, auth, db };
