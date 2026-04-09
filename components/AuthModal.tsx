@@ -23,7 +23,6 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
   const { signUp, logIn } = useAuth();
   const router = useRouter();
 
-  // Animate in
   useEffect(() => {
     if (isOpen) {
       requestAnimationFrame(() => setVisible(true));
@@ -32,12 +31,10 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
     }
   }, [isOpen]);
 
-  // Reset when mode changes from parent
   useEffect(() => {
     setIsLogin(defaultMode === "login");
   }, [defaultMode]);
 
-  // Close on Escape
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -104,7 +101,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
       {/* Backdrop */}
       <div
         onClick={handleClose}
-        className={`absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-black/70 backdrop-blur-xl transition-opacity duration-300 ${
           visible ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -117,12 +114,12 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
             : "opacity-0 scale-95 translate-y-4"
         } ${shake ? "animate-shake" : ""} ${success ? "animate-success" : ""}`}
       >
-        {/* Glow effect behind modal */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-violet-600/20 to-purple-600/20 rounded-3xl blur-xl opacity-60" />
+        {/* Glow behind modal */}
+        <div className="absolute -inset-3 bg-gradient-to-r from-blue-600/15 via-violet-600/20 to-purple-600/15 rounded-3xl blur-2xl" />
 
-        <div className="relative rounded-2xl border border-white/[0.08] bg-gray-950/95 backdrop-blur-xl shadow-2xl shadow-black/40 overflow-hidden">
+        <div className="relative rounded-2xl glass-strong shadow-2xl shadow-black/50 overflow-hidden">
           {/* Top gradient accent */}
-          <div className="h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+          <div className="h-[2px] bg-gradient-to-r from-transparent via-violet-500 to-transparent" />
 
           <div className="p-8 sm:p-10">
             {/* Close button */}
@@ -136,14 +133,17 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
             </button>
 
             {/* Logo */}
-            <div className="flex justify-center mb-6">
-              <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-600/25">
-                S
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-to-br from-blue-500 to-violet-600 rounded-2xl blur-lg opacity-40" />
+                <div className="relative h-14 w-14 rounded-2xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-violet-600/30">
+                  S
+                </div>
               </div>
             </div>
 
             {/* Tab switcher */}
-            <div className="flex bg-white/[0.04] rounded-xl p-1 mb-8">
+            <div className="flex glass rounded-xl p-1 mb-8">
               <button
                 onClick={() => { setIsLogin(true); setError(""); }}
                 className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
@@ -184,7 +184,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <label htmlFor="modal-email" className="block text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <label htmlFor="modal-email" className="block text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Email Address
                 </label>
                 <div className="relative">
@@ -199,14 +199,14 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pl-11 pr-4 py-3 bg-white/[0.04] border border-white/[0.08] rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white/[0.06] transition-all text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] transition-all text-sm input-glow"
                     placeholder="you@university.edu"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="modal-password" className="block text-xs font-medium text-gray-400 uppercase tracking-wider">
+                <label htmlFor="modal-password" className="block text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Password
                 </label>
                 <div className="relative">
@@ -222,7 +222,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="w-full pl-11 pr-4 py-3 bg-white/[0.04] border border-white/[0.08] rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white/[0.06] transition-all text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-white/[0.03] border border-white/[0.08] rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.05] transition-all text-sm input-glow"
                     placeholder="Min. 6 characters"
                   />
                 </div>
@@ -231,13 +231,11 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
               <button
                 type="submit"
                 disabled={loading}
-                className="relative w-full py-3 px-4 text-sm font-medium text-white rounded-xl transition-all duration-200 overflow-hidden group disabled:cursor-not-allowed"
+                className="group relative w-full py-3.5 px-4 text-sm font-semibold text-white rounded-xl transition-all duration-200 overflow-hidden disabled:cursor-not-allowed hover:scale-[1.01] active:scale-[0.99]"
               >
-                {/* Button gradient bg */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-violet-600 transition-opacity group-hover:opacity-90 group-disabled:opacity-50" />
-                {/* Shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 transition-opacity group-disabled:opacity-50" />
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-
+                <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-blue-600 rounded-xl blur-lg opacity-0 group-hover:opacity-25 transition-opacity" />
                 <span className="relative flex items-center justify-center gap-2">
                   {loading ? (
                     <>
@@ -269,7 +267,7 @@ export default function AuthModal({ isOpen, onClose, defaultMode = "login" }: Au
                 {isLogin ? "New to Summarize? " : "Already studying with us? "}
                 <button
                   onClick={() => { setIsLogin(!isLogin); setError(""); }}
-                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                  className="text-violet-400 hover:text-violet-300 font-medium transition-colors"
                 >
                   {isLogin ? "Create an account" : "Sign in"}
                 </button>

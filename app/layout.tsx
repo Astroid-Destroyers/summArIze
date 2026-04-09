@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Summarize",
-  description: "Summarize anything, instantly.",
+  title: "SummArIze - Study Smarter, Not Harder",
+  description: "AI-powered study tool that transforms your notes into summaries, quizzes, flashcards, and more.",
 };
 
 export default function RootLayout({
@@ -27,7 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-950 text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ background: "#050510", color: "#f0f0f8" }}
       >
         <AuthProvider>
           <Navbar />
