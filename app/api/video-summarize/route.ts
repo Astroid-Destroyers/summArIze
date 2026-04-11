@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
+import Anthropic from "@anthropic-ai/sdk";
+
 import OpenAI from "openai";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
+});
+
+const anthropic = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
 export async function POST(req: Request) {
@@ -23,18 +29,31 @@ export async function POST(req: Request) {
             ? `Summarize this YouTube video: ${url}`
             : "Summarize this uploaded video.";
 
-        const summary = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-                {
-                    role: "user",
-                    content: inputText,
-                },
-            ],
-        });
+        let summaryText = "";
+
+        try {
+            const summary = await openai.chat.completions.create({
+                model: "gpt-4o-mini",
+                messages: [
+                    {
+                        role: "user",
+                        content: inputText,
+                    },
+                ],
+            });
+            summaryText = summary.choices[0].message.content || "";
+        } catch (openaiError) {
+            console.error("OpenAI failed, falling back to Anthropic:", openaiError);
+            const message = await anthropic.messages.create({
+                model: "claude-3-5-sonnet-20240620",
+                max_tokens: 4096,
+                messages: [{ role: "user", content: inputText }],
+            });
+            summaryText = message.content[0].type === 'text' ? message.content[0].text : "";
+        }
 
         return NextResponse.json({
-            summary: summary.choices[0].message.content,
+            summary: summaryText,
         });
 
     } catch (error) {
