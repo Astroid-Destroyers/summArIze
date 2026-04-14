@@ -52,7 +52,7 @@ export default function Navbar() {
                 </div>
               </div>
               <span className="text-lg font-semibold text-white tracking-tight">
-                Summ<span className="gradient-text">Ar</span>Ize
+                Summ<span className="gradient-text">A</span>r<span className="gradient-text">I</span>ze
               </span>
             </Link>
 
