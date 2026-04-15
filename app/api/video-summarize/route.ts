@@ -58,7 +58,7 @@ async function fetchYoutubeTranscript(url: string): Promise<string> {
                 },
                 // 🔥 IMPORTANT: correct body format
                 body: JSON.stringify({
-                    video_url: url,
+                    url: url,
                 }),
                 signal: controller.signal,
             }
