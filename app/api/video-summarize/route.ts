@@ -1,7 +1,10 @@
+export const runtime = "nodejs";
+
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { YoutubeTranscript } from "youtube-transcript";
+
 
 export async function POST(req: Request) {
     try {
