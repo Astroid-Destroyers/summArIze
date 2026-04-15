@@ -39,7 +39,7 @@ async function fetchYoutubeTranscript(url: string): Promise<string> {
     }
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     try {
         const response = await fetch(
