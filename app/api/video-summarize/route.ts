@@ -3,10 +3,6 @@ export const runtime = "nodejs";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
-
 function isNonEmptyString(value: unknown): value is string {
     return typeof value === "string" && value.trim().length > 0;
 }
@@ -92,7 +88,8 @@ async function fetchYoutubeTranscript(url: string): Promise<string> {
 
 // 🔥 FIXED: safer FormData parsing
 async function extractInputText(
-    formData: FormData
+    formData: FormData,
+    openai: OpenAI
 ): Promise<{ inputText?: string; error?: string; status?: number }> {
     const rawUrl = formData.get("url");
     const rawTranscript = formData.get("transcript");
@@ -204,9 +201,11 @@ export async function POST(req: Request) {
             );
         }
 
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
         const formData = await req.formData();
 
-        const extracted = await extractInputText(formData);
+        const extracted = await extractInputText(formData, openai);
 
         if (extracted.error || !extracted.inputText) {
             return NextResponse.json(
