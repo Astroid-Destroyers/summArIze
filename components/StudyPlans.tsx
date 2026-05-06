@@ -10,6 +10,8 @@ import {
   onSnapshot,
   query,
   serverTimestamp,
+  type QueryDocumentSnapshot,
+  type QuerySnapshot,
   where,
 } from "firebase/firestore";
 
@@ -161,10 +163,14 @@ export default function StudyPlans() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setSummaries([]);
+      setLoading(false);
+      return;
+    }
     const q = query(collection(db, "summaries"), where("userId", "==", user.uid));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const docs = snapshot.docs.map((doc) => ({
+    const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot) => {
+      const docs = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
         id: doc.id,
         title: doc.data().title,
         content: doc.data().content,
@@ -179,14 +185,18 @@ export default function StudyPlans() {
   }, [user]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setSavedPlans([]);
+      setLoadingSavedPlans(false);
+      return;
+    }
     let cancelled = false;
     const load = async () => {
       setLoadingSavedPlans(true);
       try {
         const q = query(collection(db, "studyPlans"), where("userId", "==", user.uid));
         const snap = await getDocs(q);
-        const docs = snap.docs.map((d) => ({
+        const docs = snap.docs.map((d: QueryDocumentSnapshot) => ({
           id: d.id,
           testDate: String(d.data().testDate ?? ""),
           sessionsPerDay: Number(d.data().sessionsPerDay ?? 2),
@@ -311,6 +321,21 @@ export default function StudyPlans() {
     return (
       <div className="max-w-4xl mx-auto py-12">
         <div className="h-40 rounded-2xl shimmer-loading border border-white/[0.04]" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-4xl mx-auto py-16 text-center">
+        <div className="relative inline-block mb-6">
+          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/15 to-blue-500/15 rounded-3xl blur-2xl" />
+          <div className="relative w-24 h-24 glass rounded-3xl flex items-center justify-center text-5xl">📅</div>
+        </div>
+        <h2 className="text-xl font-semibold text-white mb-3">Sign in to create a study plan</h2>
+        <p className="text-gray-500 max-w-md mx-auto">
+          Study plans are built from your saved summaries. Please sign in, then come back here.
+        </p>
       </div>
     );
   }
