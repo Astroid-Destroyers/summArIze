@@ -13,6 +13,7 @@ import QuizHistory from "@/components/QuizHistory";
 import FlashcardGenerator from "@/components/FlashcardGenerator";
 import SavedFlashcards from "@/components/SavedFlashcards";
 import FlappyStudy from "@/components/FlappyStudy";
+import VideoProcessingAnimation from "@/components/VideoProcessingAnimation";
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
@@ -481,6 +482,9 @@ export default function DashboardPage() {
           ) : activeTab === "summary" ? (
             <SavedSummaries />
           ) : activeTab === "video" ? (
+            processing ? (
+              <VideoProcessingAnimation />
+            ) : (
             <div className="max-w-4xl mx-auto">
               <h2 className="text-2xl font-bold text-white mb-4">
                 Video Summarizer
@@ -558,8 +562,8 @@ export default function DashboardPage() {
                 <p className="text-red-400 mt-4">{error}</p>
               )}
             </div>
-          )
-            : activeTab === "quiz" ? (
+            )
+          ) : activeTab === "quiz" ? (
               <QuizGenerator />
             ) : activeTab === "quiz-history" ? (
               <QuizHistory />
