@@ -16,12 +16,13 @@ import FlappyStudy from "@/components/FlappyStudy";
 import VideoProcessingAnimation from "@/components/VideoProcessingAnimation";
 import StudyPlans from "@/components/StudyPlans";
 import DisplayProgress from "@/components/DisplayProgress";
+import SummaryRenderer from "@/components/SummaryRenderer";
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("upload");
-  const [uploadType, setUploadType] = useState<"summary" | "notes" | "video">("summary");
+  const [uploadType, setUploadType] = useState<"summary" | "video">("summary");
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [text, setText] = useState("");
@@ -58,14 +59,11 @@ export default function DashboardPage() {
     { id: "upload", icon: "📤", title: "Upload", badge: null },
     { id: "summary", icon: "📝", title: "My Summaries", badge: null },
     { id: "video", icon: "🎥", title: "Video Summarizer", badge: null },
-    { id: "notes", icon: "📚", title: "Auto Notes", badge: "Soon" },
     { id: "quiz", icon: "❓", title: "Quiz Generator", badge: null },
     { id: "quiz-history", icon: "📋", title: "Quiz History", badge: null },
-    { id: "feedback", icon: "✅", title: "Instant Feedback", badge: "Soon" },
     { id: "flashcards", icon: "🎴", title: "Flashcards", badge: null },
     { id: "saved-flashcards", icon: "📖", title: "My Flashcards", badge: null },
     { id: "plans", icon: "📅", title: "Study Plans", badge: null },
-    { id: "search", icon: "🔍", title: "Search", badge: "Soon" },
     { id: "progress", icon: "📊", title: "Progress", badge: null },
     { id: "games", icon: "🎮", title: "Flappy Study", badge: null },
   ];
@@ -103,7 +101,7 @@ export default function DashboardPage() {
       const formData = new FormData();
       if (file) formData.append("file", file);
       if (text.trim()) formData.append("text", text.trim());
-      formData.append("mode", uploadType === "video" ? "summary" : uploadType === "notes" ? "notes" : "summary");
+      formData.append("mode", "summary");
       const res = await fetch("/api/summarize", { method: "POST", body: formData });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
@@ -138,7 +136,7 @@ export default function DashboardPage() {
         userId: user.uid,
         title,
         content: result,
-        mode: uploadType === "notes" ? "notes" : "summary",
+        mode: "summary",
         createdAt: serverTimestamp(),
       });
       setSaved(true);
@@ -335,10 +333,9 @@ export default function DashboardPage() {
                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest">
                     Processing mode
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
                       { type: "summary" as const, icon: "📝", title: "Summary", desc: "Key takeaways", color: "blue", border: "border-blue-500", bg: "bg-blue-500/5" },
-                      { type: "notes" as const, icon: "📚", title: "Auto Notes", desc: "Structured notes", color: "violet", border: "border-violet-500", bg: "bg-violet-500/5" },
                       { type: "video" as const, icon: "🎥", title: "Video", desc: "Video content", color: "purple", border: "border-purple-500", bg: "bg-purple-500/5" },
                     ].map((mode) => (
                       <button
@@ -412,7 +409,7 @@ export default function DashboardPage() {
                           </svg>
                         </div>
                         <h3 className="text-lg font-semibold text-white">
-                          {uploadType === "notes" ? "Generated Notes" : "Summary"}
+                          Summary
                         </h3>
                       </div>
                       <button
@@ -425,10 +422,8 @@ export default function DashboardPage() {
                         Copy
                       </button>
                     </div>
-                    <div className="p-6">
-                      <div className="prose prose-invert max-w-none text-gray-300 whitespace-pre-wrap leading-relaxed">
-                        {result}
-                      </div>
+                    <div className="p-8 sm:p-10">
+                      <SummaryRenderer content={result} />
                     </div>
 
                     {/* Save */}
@@ -554,8 +549,31 @@ export default function DashboardPage() {
 
               {/* Result */}
               {result && (
-                <div className="mt-6 p-6 bg-white/5 rounded-xl text-white whitespace-pre-wrap">
-                  {result}
+                <div className="mt-10 glass-card rounded-2xl overflow-hidden animate-fadeInUp">
+                  <div className="flex items-center justify-between p-6 border-b border-white/[0.06] bg-gradient-to-r from-purple-500/5 to-transparent">
+                    <div className="flex items-center gap-3">
+                      <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-semibold text-white">
+                        Video Summary
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(result)}
+                      className="flex items-center gap-2 px-4 py-2 text-sm glass hover:bg-white/[0.08] text-gray-300 rounded-lg transition-all"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9.75a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <div className="p-8 sm:p-10">
+                    <SummaryRenderer content={result} />
+                  </div>
                 </div>
               )}
 

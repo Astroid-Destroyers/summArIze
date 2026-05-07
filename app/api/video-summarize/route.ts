@@ -187,6 +187,15 @@ Requirements:
 - Remove repetition
 - If incomplete, say so briefly
 
+Format your response in clean GitHub-flavored Markdown:
+- Use # for the main title (one only).
+- Use ## for major sections, ### for subsections.
+- Use markdown bullets ("- ") for lists (NOT the • character).
+- Use **bold** for key terms and definitions.
+- Use *italics* for emphasis or terminology.
+- Use > blockquotes for important callouts.
+- Do NOT wrap the entire response in a code block.
+
 CONTENT:
 ${inputText}
 `.trim();

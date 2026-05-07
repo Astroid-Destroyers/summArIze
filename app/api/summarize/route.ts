@@ -7,8 +7,17 @@ const anthropic = new Anthropic({
 });
 
 const SYSTEM_PROMPTS: Record<string, string> = {
-  summary: `You are an expert academic summarizer. Given lecture notes or study material, produce a clear, concise summary that captures all key concepts, arguments, and takeaways. Use bullet points and headers for readability. Keep it thorough but digestible.`,
-  notes: `You are an expert note-taker. Given lecture notes or study material, produce clean, well-structured study notes with clear headers, sub-points, key definitions, and important details organized logically. Use markdown formatting.`,
+  summary: `You are an expert academic summarizer. Given lecture notes or study material, produce a clear, concise summary that captures all key concepts, arguments, and takeaways. Keep it thorough but digestible.
+
+Format your response in clean GitHub-flavored Markdown:
+- Use # for the main title (one only).
+- Use ## for major sections, ### for subsections.
+- Use markdown bullets ("- ") for lists (NOT the • character).
+- Use **bold** for key terms and definitions.
+- Use *italics* for emphasis or terminology.
+- Use > blockquotes for important callouts or quotes.
+- Use --- for horizontal section breaks when appropriate.
+- Do NOT wrap the entire response in a code block.`,
 };
 
 async function extractText(file: File): Promise<string> {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import SummaryRenderer from "@/components/SummaryRenderer";
 import { db } from "@/lib/firebase";
 import {
   collection,
@@ -132,10 +133,8 @@ export default function SavedSummaries() {
               </button>
             </div>
           </div>
-          <div className="p-6">
-            <div className="prose prose-invert max-w-none text-gray-300 whitespace-pre-wrap leading-relaxed">
-              {selectedSummary.content}
-            </div>
+          <div className="p-8 sm:p-10">
+            <SummaryRenderer content={selectedSummary.content} />
           </div>
         </div>
       </div>
