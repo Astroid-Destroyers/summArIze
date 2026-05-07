@@ -15,6 +15,7 @@ import SavedFlashcards from "@/components/SavedFlashcards";
 import FlappyStudy from "@/components/FlappyStudy";
 import VideoProcessingAnimation from "@/components/VideoProcessingAnimation";
 import StudyPlans from "@/components/StudyPlans";
+import DisplayProgress from "@/components/DisplayProgress";
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
@@ -65,7 +66,7 @@ export default function DashboardPage() {
     { id: "saved-flashcards", icon: "📖", title: "My Flashcards", badge: null },
     { id: "plans", icon: "📅", title: "Study Plans", badge: null },
     { id: "search", icon: "🔍", title: "Search", badge: "Soon" },
-    { id: "progress", icon: "📊", title: "Progress", badge: "Soon" },
+    { id: "progress", icon: "📊", title: "Progress", badge: null },
     { id: "games", icon: "🎮", title: "Flappy Study", badge: null },
   ];
 
@@ -574,6 +575,8 @@ export default function DashboardPage() {
               <SavedFlashcards />
             ) : activeTab === "plans" ? (
               <StudyPlans />
+            ) : activeTab === "progress" ? (
+              <DisplayProgress />
             ) : activeTab === "games" ? (
               <FlappyStudy />
             ) : (
